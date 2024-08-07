@@ -155,3 +155,30 @@ fig, ax = plt.subplots(1,1, figsize=(12, 4))
 plt_contour_wgrad(x_train, y_train, p_hist, ax, w_range=[180, 220, 0.5], b_range=[80, 120, 0.5],
             contours=[1,5,10,20],resolution=0.5)
 plt.show()
+
+"""
+Increased Learning Rate
+The larger alpha is, the faster gradient descent will converge to a solution. But, if it is too large, gradient descent 
+will diverge. Above we have an example of a solution which converges nicely.
+
+Let's try increase the value of alpha and see what happens
+"""
+# initialize parameters
+w_init = 0
+b_init = 0
+# set alpha to a large value
+iterations = 10
+tmp_alpha = 8.0e-1
+# run gradient descent
+w_final, b_final, J_hist, p_hist = gradient_descent(x_train ,y_train, w_init, b_init, tmp_alpha,
+                                                    iterations, compute_cost, compute_gradient)
+
+"""
+We can notice that w and b are bouncing back and forth between positive and negative with the absolute value increasing with each iteration. 
+Further, each iteration ∂𝐽(𝑤,𝑏)/∂𝑤  changes sign and cost is increasing rather than decreasing. 
+This is a clear sign that the learning rate is too large and the solution is diverging. Let's visualize this with a plot.
+"""
+
+plt_divergence(p_hist, J_hist,x_train, y_train)
+plt.show()
+
