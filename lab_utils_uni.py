@@ -1,7 +1,3 @@
-""" 
-lab_utils_uni.py
-    routines used in Course 1, Week2, labs1-3 dealing with single variables (univariate)
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
