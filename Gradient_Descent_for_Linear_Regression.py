@@ -115,6 +115,12 @@ w_final, b_final, J_hist, p_hist = gradient_descent(x_train ,y_train, w_init, b_
 print(f"(w,b) found by gradient descent: ({w_final:8.4f},{b_final:8.4f})")
 
 
+
+"""
+Cost versus iterations of gradient descent
+A plot of cost versus iterations is a useful measure of progress in gradient descent. Cost should always decrease in successful runs. 
+The change in cost is so rapid initially, it is useful to plot the initial decent on a different scale than the final descent. 
+"""
 # plot cost versus iteration
 fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, figsize=(12,4))
 ax1.plot(J_hist[:100])
@@ -122,4 +128,30 @@ ax2.plot(1000 + np.arange(len(J_hist[1000:])), J_hist[1000:])
 ax1.set_title("Cost vs. iteration(start)");  ax2.set_title("Cost vs. iteration (end)")
 ax1.set_ylabel('Cost')            ;  ax2.set_ylabel('Cost')
 ax1.set_xlabel('iteration step')  ;  ax2.set_xlabel('iteration step')
+plt.show()
+
+"""
+Predictions
+Now that we have discovered the optimal values for the parameters 𝑤 and 𝑏, we can now use the model to predict housing 
+values based on our learned parameters. As expected, the predicted values are nearly the same as the training values for 
+the same housing. Further, the value not in the prediction is in line with the expected value.
+"""
+print(f"1000 sqft house prediction {w_final*1.0 + b_final:0.1f} Thousand dollars")
+print(f"1200 sqft house prediction {w_final*1.2 + b_final:0.1f} Thousand dollars")
+print(f"2000 sqft house prediction {w_final*2.0 + b_final:0.1f} Thousand dollars")
+
+
+"""
+Plotting
+We can show the progress of gradient descent during its execution by plotting the cost over iterations on a contour plot of the cost(w,b).
+"""
+
+fig, ax = plt.subplots(1, 1, figsize=(12, 6))
+plt_contour_wgrad(x_train, y_train, p_hist, ax)
+plt.show()
+
+# Zooming in
+fig, ax = plt.subplots(1,1, figsize=(12, 4))
+plt_contour_wgrad(x_train, y_train, p_hist, ax, w_range=[180, 220, 0.5], b_range=[80, 120, 0.5],
+            contours=[1,5,10,20],resolution=0.5)
 plt.show()
