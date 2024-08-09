@@ -58,3 +58,28 @@ print(f"x_vec shape: {x_vec.shape}, x_vec value: {type(x_vec)}")
 # Make a prediction
 f_wb = predict_single_loop(x_vec, w_init, b_init)
 print(f"f_wb shape: {f_wb.shape}, predicted: {f_wb}")
+
+"""
+Single Prediction, vector
+Let's implement the previous function using the dot product instead of the for loop
+
+Args:
+    x (ndarray): Shape (n,) example with multiple features
+    w (ndarray): Shape (n,) model parameters   
+    b (scalar):             model parameter 
+      
+Returns:
+    p (scalar): prediction
+"""
+
+def predict(x, w, b):
+    p = np.dot(x, w) + b
+    return p
+
+# get a row from our training data
+x_vec = X_train[0,:]
+print(f"x_vec shape {x_vec.shape}, x_vec value: {x_vec}")
+
+# make a prediction
+f_wb = predict(x_vec,w_init, b_init)
+print(f"f_wb shape {f_wb.shape}, prediction: {f_wb}")
