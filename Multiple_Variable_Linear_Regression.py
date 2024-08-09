@@ -108,3 +108,39 @@ def compute_cost(X, y, w, b):
 # Compute and display cost using our pre-chosen optimal parameters.
 cost = compute_cost(X_train, y_train, w_init, b_init)
 print(f'Cost at optimal w : {cost}')
+
+
+"""
+Gradient Descent With Multiple Variables
+We will repeat until convergence where, n is the number of features, parameters w, b are updated simultaneously.
+
+Args:
+    X (ndarray (m,n)): Data, m examples with n features
+    y (ndarray (m,)) : target values
+    w (ndarray (n,)) : model parameters  
+    b (scalar)       : model parameter
+      
+Returns:
+    dj_dw (ndarray (n,)): The gradient of the cost w.r.t. the parameters w. 
+    dj_db (scalar):       The gradient of the cost w.r.t. the parameter b. 
+"""
+def compute_gradient(X, y, w, b):
+    m, n = X.shape
+    dj_dw = np.zeros((n,))
+    dj_db = 0.
+
+    for i in range(m):
+        err = (np.dot(X[i], w) + b) - y[i]
+        for j in range(n):
+            dj_dw[j] = dj_dw[j] + err * X[i, j]
+        dj_db = dj_db + err
+    dj_dw = dj_dw / m
+    dj_db = dj_db / m
+
+    return dj_db, dj_dw
+
+#Compute and display gradient
+tmp_dj_db, tmp_dj_dw = compute_gradient(X_train, y_train, w_init, b_init)
+print(f'dj_db at initial w,b: {tmp_dj_db}')
+print(f'dj_dw at initial w,b: \n {tmp_dj_dw}')
+
