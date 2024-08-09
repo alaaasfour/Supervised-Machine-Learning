@@ -31,5 +31,30 @@ w_init = np.array([ 0.39133535, 18.75376741, -53.36032453, -26.42131618])
 print(f"w_init shape: {w_init.shape}, b_init type: {type(b_init)}")
 
 """
+Single Prediction element by element
+Let's implement the predict_single_loop function, single predict using linear regression
 
+Args:
+    x (ndarray): Shape (n,) example with multiple features
+    w (ndarray): Shape (n,) model parameters    
+    b (scalar):  model parameter     
+      
+Returns:
+    p (scalar):  prediction
 """
+def predict_single_loop(x, w, b):
+    n = x.shape[0]
+    p = 0
+    for i in range(n):
+        p_i = x[i] * w[i]
+        p = p + p_i
+    p = p + b
+    return p
+
+# Get a row fromm our training data
+x_vec = X_train[0,:]
+print(f"x_vec shape: {x_vec.shape}, x_vec value: {type(x_vec)}")
+
+# Make a prediction
+f_wb = predict_single_loop(x_vec, w_init, b_init)
+print(f"f_wb shape: {f_wb.shape}, predicted: {f_wb}")
