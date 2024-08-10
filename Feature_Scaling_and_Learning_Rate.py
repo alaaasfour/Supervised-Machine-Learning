@@ -10,4 +10,5 @@ In this lab, we will achieve the following items:
 import numpy as np
 import matplotlib.pyplot as plt
 np.set_printoptions(precision=2)
+from lab_utils_multi 
 plt.style.use('./deeplearning.mplstyle')
