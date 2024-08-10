@@ -4,6 +4,8 @@ In this script, we will extend the Linear Regression routines to support multipl
 import copy, math
 import numpy as np
 import matplotlib.pyplot as plt
+plt.style.use('./deeplearning.mplstyle')
+np.set_printoptions(precision=2)
 
 """
 We will build a linear regression model using these values so we can then predict the price for other houses. 
@@ -144,3 +146,68 @@ tmp_dj_db, tmp_dj_dw = compute_gradient(X_train, y_train, w_init, b_init)
 print(f'dj_db at initial w,b: {tmp_dj_db}')
 print(f'dj_dw at initial w,b: \n {tmp_dj_dw}')
 
+"""
+Gradient Descent With Multiple Variables
+Now, we will perform batch gradient descent to learn w and b. Updates w and b by taking num_iters gradient steps with learning rate alpha
+
+Args:
+    X (ndarray (m,n))   : Data, m examples with n features
+    y (ndarray (m,))    : target values
+    w_in (ndarray (n,)) : initial model parameters  
+    b_in (scalar)       : initial model parameter
+    cost_function       : function to compute cost
+    gradient_function   : function to compute the gradient
+    alpha (float)       : Learning rate
+    num_iters (int)     : number of iterations to run gradient descent
+      
+Returns:
+    w (ndarray (n,)) : Updated values of parameters 
+    b (scalar)       : Updated value of parameter 
+"""
+def gradient_descent(X, y, w_in, b_in, cost_function, gradient_function, alpha, num_iters):
+    # An array to store cost J and w's at each iteration primarily for graphing later
+    J_history = []
+    w = copy.deepcopy(w_in) # Avoid modifying global w within function
+    b = b_in
+
+    for i in range(num_iters):
+        # Calculate the gradient and update the parameters
+        dj_db, dj_dw = gradient_function(X, y, w, b)
+
+        # Update parameters using w, b, alpha and gradient
+        w = w - alpha * dj_dw
+        b = b - alpha * dj_db
+
+        # Save cost J at each iteration
+        if i < 100000:
+            J_history.append(cost_function(X, y, w, b))
+
+        # Print cost every at intervals 10 times or as many iterations if < 10
+        if i % math.ceil(num_iters / 10) == 0:
+            print(f'Iteration {i:4d}: Cost {J_history[-1]:8.2f}')
+
+    return w, b, J_history
+
+# initialize parameters
+initial_w = np.zeros_like(w_init)
+initial_b = 0.
+# some gradient descent settings
+iterations = 1000
+alpha = 5.0e-7
+# run gradient descent
+w_final, b_final, J_hist = gradient_descent(X_train, y_train, initial_w, initial_b,
+                                                    compute_cost, compute_gradient,
+                                                    alpha, iterations)
+print(f"b,w found by gradient descent: {b_final:0.2f},{w_final} ")
+m,_ = X_train.shape
+for i in range(m):
+    print(f"prediction: {np.dot(X_train[i], w_final) + b_final:0.2f}, target value: {y_train[i]}")
+
+# plot cost versus iteration
+fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, figsize=(12, 4))
+ax1.plot(J_hist)
+ax2.plot(100 + np.arange(len(J_hist[100:])), J_hist[100:])
+ax1.set_title("Cost vs. iteration");  ax2.set_title("Cost vs. iteration (tail)")
+ax1.set_ylabel('Cost')             ;  ax2.set_ylabel('Cost')
+ax1.set_xlabel('iteration step')   ;  ax2.set_xlabel('iteration step')
+plt.show()
