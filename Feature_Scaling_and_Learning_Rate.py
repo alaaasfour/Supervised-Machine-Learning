@@ -119,3 +119,38 @@ ax[0].set_ylabel("count");
 fig.suptitle("distribution of features after normalization")
 
 plt.show()
+
+# Let's rerun the gradient descent algorithm with normalized data.
+w_norm, b_norm, hist = run_gradient_descent(X_norm, y_train, 1000, 1.0e-1, )
+
+#Now, let's predict target using normalized features
+m = X_norm.shape[0]
+yp = np.zeros(m)
+for i in range(m):
+    yp[i] = np.dot(X_norm[i], w_norm) + b_norm
+
+    # plot predictions and targets versus original features
+fig,ax=plt.subplots(1,4,figsize=(12, 3),sharey=True)
+for i in range(len(ax)):
+    ax[i].scatter(X_train[:,i],y_train, label = 'target')
+    ax[i].set_xlabel(X_features[i])
+    ax[i].scatter(X_train[:,i],yp,color=dlc["dlorange"], label = 'predict')
+ax[0].set_ylabel("Price"); ax[0].legend();
+fig.suptitle("target versus prediction using z-score normalized model")
+plt.show()
+
+
+"""
+The point of generating the model is to use it to predict housing prices that are not in the data set. 
+Let's predict the price of a house with 1200 sqft, 3 bedrooms, 1 floor, 40 years old. 
+Recall, that you must normalize the data with the mean and standard deviation derived when the training data was normalized.
+"""
+
+# First, normalize out example
+x_house = np.array([1200, 3, 1, 40])
+x_house_norm = (x_house - X_mu) / X_sigma
+print(x_house_norm)
+x_house_predict = np.dot(x_house_norm, w_norm) + b_norm
+print(f" predicted price of a house with 1200 sqft, 3 bedrooms, 1 floor, 40 years old = ${x_house_predict*1000:0.0f}")
+
+plt_equal_scale(X_train, X_norm, y_train)
