@@ -33,3 +33,19 @@ for i in range(len(ax)):
     ax[i].set_xlabel(X_features[i])
 ax[0].set_ylabel("Price (1000's)")
 plt.show()
+
+# Learning Rate (alpha)
+# Set alpha to 9.9e-7
+_,_, hist = run_gradient_descent(X_train, y_train, 10, 9.9e-7)
+plot_cost_i_w(X_train, y_train, hist)
+
+
+# Set alpha to 9e-7
+_,_,hist = run_gradient_descent(X_train, y_train, 10, alpha = 9e-7)
+plot_cost_i_w(X_train, y_train, hist)
+
+# Set alpha to 1e-7
+_,_,hist = run_gradient_descent(X_train, y_train, 10, alpha = 1e-7)
+plot_cost_i_w(X_train, y_train, hist)
+
+
