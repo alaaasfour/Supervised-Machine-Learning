@@ -71,5 +71,29 @@ If we were to run for a very long time, it would continue to reduce the impact o
 
 ** Gradient descent is picking the 'correct' features for us by emphasizing its associated parameter **
 
+- Less weight value implies less important/correct feature, and in extreme, when the weight becomes zero or very close to zero, 
+the associated feature is not useful in fitting the model to the data.
+"""
 
 """
+An Alternate View
+Above, polynomial features were chosen based on how well they matched the target data. Another way to think about this is
+to note that we are still using linear regression once we have created new features. Given that, the best features will 
+be linear relative to the target.
+"""
+
+# Create target data
+x = np.arange(0, 20, 1)
+y = x**2
+
+# Engineer features
+X = np.c_[x, x**2, x**3]
+X_features = ['x','x^2','x^3']
+
+fig,ax=plt.subplots(1, 3, figsize=(12, 3), sharey=True)
+for i in range(len(ax)):
+    ax[i].scatter(X[:,i],y)
+    ax[i].set_xlabel(X_features[i])
+ax[0].set_ylabel("y")
+plt.show()
+
