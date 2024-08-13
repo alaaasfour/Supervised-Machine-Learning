@@ -13,7 +13,6 @@ np.set_printoptions(precision=2)
 """
 Polynomial Features
 Let's try using what we know so far to fit a non-linear curve. We'll start with a simple quadratic:  y = 1+x^2
-
 """
 # Create target data
 x = np.arange(0, 20, 1)
@@ -25,7 +24,7 @@ plt.scatter(x, y, marker = 'x', color = 'red', label = 'Actual Value'); plt.titl
 plt.plot(x, X@model_w + model_b, label = 'Predicted Value'); plt.xlabel("X"); plt.ylabel("y"); plt.legend(); plt.show()
 
 """
-From the figure, we can notice that, it's not a great fit. What is needed is something like a second degree equation, or a polynomial feature. 
+From the figure, we can notice that, it's not a great fit. What is needed is something like a quadratic equation, or a polynomial feature. 
 To accomplish this, we can modify the input data to engineer the needed features. 
 If you swap the original data with a version that squares the 𝑥 value, then we can achieve what we need.
 """
@@ -48,3 +47,29 @@ Gradient descent modified our initial values of w,b to be (1.0,0.049), very clos
 If we ran it longer, it could be a better match.
 """
 
+"""
+Selecting Features
+In the previous example, we knew that an x^2 term was required. It may not always be obvious which features are required. 
+One could add a variety of potential features to try and find the most useful. 
+For example, what if we had instead tried a cubic equation as follows:
+"""
+
+# Create target data
+x = np.arange(0, 20, 1)
+y = x**2
+
+# Engineer feature
+X = np.c_[x, x**2, x**3]
+model_w, model_b = run_gradient_descent_feng(X, y, iterations = 10000, alpha = 1e-7)
+plt.scatter(x, y, marker = 'x', c = 'r', label = "Actual Value"); plt.title("x, x**2, x**3 Features")
+plt.plot(x, X@model_w + model_b, label = "Predicted Value"); plt.xlabel("x"); plt.ylabel("y"); plt.legend(); plt.show()
+
+"""
+From the previous example, we can notice that the value of w, [0.08 0.54 0.03] and b is 0.0106.
+Gradient descent has emphasized the data that is the best fit to the x^2 data by increasing the 𝑤1 term relative to the others. 
+If we were to run for a very long time, it would continue to reduce the impact of the other terms.
+
+** Gradient descent is picking the 'correct' features for us by emphasizing its associated parameter **
+
+
+"""
