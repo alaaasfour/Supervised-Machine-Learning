@@ -125,5 +125,24 @@ X = zscore_normalize_features(X)
 
 model_w, model_b = run_gradient_descent_feng(X, y, iterations = 100000, alpha = 1e-1)
 
+# Note, Feature scaling allows this to converge much faster.
+# Note again the values of w. The w1 term, which is the x^2 term is the most emphasized. Gradient descent has all but eliminated the x^3 term.
+plt.scatter(x, y, marker='x', c='red', label="Actual Value"); plt.title("Normalized x x**2, x**3 Feature")
+plt.plot(x,X@model_w + model_b, label="Predicted Value"); plt.xlabel("x"); plt.ylabel("y"); plt.legend(); plt.show()
+
+
+"""
+Complex Functions
+With feature engineering, even quite complex functions can be modeled as follows:
+"""
+
+x = np.arange(0,20,1)
+y = np.cos(x/2)
+
+X = np.c_[x, x**2, x**3,x**4, x**5, x**6, x**7, x**8, x**9, x**10, x**11, x**12, x**13]
+X = zscore_normalize_features(X)
+
+model_w,model_b = run_gradient_descent_feng(X, y, iterations = 1000000, alpha = 1e-1)
+
 plt.scatter(x, y, marker='x', c='red', label="Actual Value"); plt.title("Normalized x x**2, x**3 Feature")
 plt.plot(x,X@model_w + model_b, label="Predicted Value"); plt.xlabel("x"); plt.ylabel("y"); plt.legend(); plt.show()
