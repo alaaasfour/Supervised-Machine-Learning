@@ -90,6 +90,9 @@ y = x**2
 X = np.c_[x, x**2, x**3]
 X_features = ['x','x^2','x^3']
 
+
+# In the following figure, it is clear that the x^2  feature mapped against the target value y is linear.
+# Linear regression can then easily generate a model using that feature.
 fig,ax=plt.subplots(1, 3, figsize=(12, 3), sharey=True)
 for i in range(len(ax)):
     ax[i].scatter(X[:,i],y)
@@ -97,3 +100,30 @@ for i in range(len(ax)):
 ax[0].set_ylabel("y")
 plt.show()
 
+"""
+Scaling features
+If the data set has features with significantly different scales, one should apply feature scaling to speed gradient descent. 
+In the example above, there is x, x^2 and x^3  which will naturally have very different scales. 
+Let's apply Z-score normalization to our example.
+"""
+
+# Create target data
+x = np.arange(0,20,1)
+X = np.c_[x, x**2, x**3]
+print(f"Peak to Peak range by column in Raw        X:{np.ptp(X,axis=0)}")
+
+# add mean_normalization
+X = zscore_normalize_features(X)
+print(f"Peak to Peak range by column in Normalized X:{np.ptp(X,axis=0)}")
+
+# Now we can try again with a more aggressive value of alpha:
+x = np.arange(0,20,1)
+y = x**2
+
+X = np.c_[x, x**2, x**3]
+X = zscore_normalize_features(X)
+
+model_w, model_b = run_gradient_descent_feng(X, y, iterations = 100000, alpha = 1e-1)
+
+plt.scatter(x, y, marker='x', c='red', label="Actual Value"); plt.title("Normalized x x**2, x**3 Feature")
+plt.plot(x,X@model_w + model_b, label="Predicted Value"); plt.xlabel("x"); plt.ylabel("y"); plt.legend(); plt.show()
