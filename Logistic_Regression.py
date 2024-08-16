@@ -56,6 +56,10 @@ def sigmoid(z):
     g = 1 / (1 + np.exp(-z))
     return g
 
+print("Exercise 1: Sigmoid Function")
+print("==========")
 # Test the sigmoid function
 print ("sigmoid([ -1, 0, 1, 2]) = " + str(sigmoid(np.array([-1, 0, 1, 2]))))
 sigmoid_test(sigmoid)
+print("========================================")
+
