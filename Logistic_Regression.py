@@ -444,3 +444,32 @@ print(f"First few elements of regularized dj_dw:\n {dj_dw[:4].tolist()}", )
 # UNIT TESTS
 compute_gradient_reg_test(compute_gradient_reg)
 print("========================================")
+
+# Similar to the previous parts, you will use your gradient descent function implemented above to learn the optimal parameters  𝑤, 𝑏.
+# Initialize fitting parameters
+np.random.seed(1)
+initial_w = np.random.rand(X_mapped.shape[1])-0.5
+initial_b = 1.
+
+# Set regularization parameter lambda_ (you can try varying this)
+lambda_ = 0.01
+
+# Some gradient descent settings
+iterations = 10000
+alpha = 0.01
+
+w,b, J_history,_ = gradient_descent(X_mapped, y_train, initial_w, initial_b, compute_cost_reg, compute_gradient_reg, alpha, iterations, lambda_)
+
+# Plotting the decision boundary
+plot_decision_boundary(w, b, X_mapped, y_train)
+# Set the y-axis label
+plt.ylabel('Microchip Test 2')
+# Set the x-axis label
+plt.xlabel('Microchip Test 1')
+plt.legend(loc = "upper right")
+plt.show()
+
+# Evaluating regularized logistic regression model
+#Compute accuracy on the training set
+p = predict(X_mapped, w, b)
+print('Train Accuracy: %f'%(np.mean(p == y_train) * 100))
