@@ -178,3 +178,74 @@ print('dj_dw at test w and b:', dj_dw.tolist())
 compute_gradient_test(compute_gradient)
 print("========================================")
 
+"""
+Exercise 4: Learning Parameters using Gradient Descent
+Now, we will find the optimal parameters of a logistic regression model by using gradient descent.
+We will perform batch gradient descent to learn theta. Update theta by taking num_iters gradient steps with learning rate alpha
+
+Args:
+    X :    (ndarray Shape (m, n) data, m examples by n features
+    y :    (ndarray Shape (m,))  target value 
+    w_in : (ndarray Shape (n,))  Initial values of parameters of the model
+    b_in : (scalar)              Initial value of parameter of the model
+    cost_function :              function to compute cost
+    gradient_function :          function to compute gradient
+    alpha : (float)              Learning rate
+    num_iters : (int)            number of iterations to run gradient descent
+    lambda_ : (scalar, float)    regularization constant
+
+Returns:
+    w : (ndarray Shape (n,)) Updated values of parameters of the model after running gradient descent
+    b : (scalar)                Updated value of parameter of the model after running gradient descent
+"""
+
+def gradient_descent(X, y, w_in, b_in, cost_function, gradient_function, alpha, num_iters, lambda_):
+    # Number of training examples
+    m = len(X)
+
+    # An array to store cost J and w's at each iteration for graphing
+    J_history = []
+    w_history = []
+
+    for i in range(num_iters):
+        # Calculate the gradient and update the parameters
+        dj_db, db_dw = gradient_function(X, y, w_in, b_in, lambda_)
+
+        # Update parameters using w, b, alpha and gradient
+        w_in = w_in - alpha * dj_db
+        b_in = b_in - alpha * dj_db
+
+        # Save cost J at each iteration
+        if i < 100000:
+            cost = cost_function(X, y, w_in, b_in, lambda_)
+            J_history.append(cost)
+
+        # Print cost every at intervals 10 times or as many iterations if < 10
+        if i % math.ceil(num_iters / 10) == 0 or i == (num_iters - 1):
+            w_history.append(w_in)
+            print(f"Iteration {i:4}: Cost {float(J_history[-1]):8.2f}")
+
+    return w_in, b_in, J_history, w_history
+
+print("Exercise 4: Learning Parameters using Gradient Descent")
+print("==========")
+# Now let's run the gradient descent algorithm above to learn the parameters for our dataset.
+np.random.seed(1)
+initial_w = 0.01 * (np.random.rand(2) - 0.5)
+initial_b = -8
+
+# Some gradient descent settings
+iterations = 10000
+alpha = 0.001
+
+w,b, J_history,_ = gradient_descent(X_train ,y_train, initial_w, initial_b, compute_cost, compute_gradient, alpha, iterations, 0)
+
+# Plotting the decision boundary
+plot_decision_boundary(w, b, X_train, y_train)
+# Set the y-axis label
+plt.ylabel('Exam 2 score')
+# Set the x-axis label
+plt.xlabel('Exam 1 score')
+plt.legend(loc = "upper right")
+plt.show()
+print("========================================")
