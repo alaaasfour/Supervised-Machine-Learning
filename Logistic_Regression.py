@@ -401,3 +401,46 @@ print("Regularized cost :", cost)
 # UNIT TEST
 compute_cost_reg_test(compute_cost_reg)
 print("========================================")
+
+"""
+Exercise 8: Gradient for Regularized Logistic Regression
+In this part, we will implement the gradient for regularized logistic regression.
+
+Args:
+    X : (ndarray Shape (m,n)) data, m examples by n features
+    y : (ndarray Shape (m,))  target value 
+    w : (ndarray Shape (n,))  values of parameters of the model      
+    b : (scalar)              value of bias parameter of the model
+    lambda_ : (scalar, float) Controls amount of regularization
+
+Returns:
+    dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b
+    dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w 
+"""
+
+def compute_gradient_reg(X, y, w, b, lambda_ = 1):
+    m, n = X.shape
+    dj_db, dj_dw = compute_gradient(X, y, w, b)
+
+    for j in range(n):
+        dj_dw_j_reg = (lambda_ / m) * w[j]
+        dj_dw[j] = dj_dw[j] + dj_dw_j_reg
+
+    return dj_db, dj_dw
+
+print("Exercise 8: Gradient for Regularized Logistic Regression")
+print("==========")
+X_mapped = map_feature(X_train[:, 0], X_train[:, 1])
+np.random.seed(1)
+initial_w = np.random.rand(X_mapped.shape[1]) - 0.5
+initial_b = 0.5
+
+lambda_ = 0.5
+dj_db, dj_dw = compute_gradient_reg(X_mapped, y_train, initial_w, initial_b, lambda_)
+
+print(f"dj_db: {dj_db}", )
+print(f"First few elements of regularized dj_dw:\n {dj_dw[:4].tolist()}", )
+
+# UNIT TESTS
+compute_gradient_reg_test(compute_gradient_reg)
+print("========================================")
