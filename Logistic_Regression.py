@@ -303,8 +303,52 @@ print(f'Output of predict: shape {tmp_p.shape}, value {tmp_p}')
 # UNIT TESTS
 predict_test(predict)
 
-#Compute accuracy on our training set
+# Compute accuracy on our training set
 p = predict(X_train, w,b)
 print('Train Accuracy: %f'%(np.mean(p == y_train) * 100))
 print("========================================")
+
+"""
+Exercise 6: Regularized Logistic Regression
+Now, we will implement regularized logistic regression to predict whether microchips from a fabrication plant passes 
+quality assurance (QA). During QA, each microchip goes through various tests to ensure it is functioning correctly.
+
+"""
+
+# Load dataset
+X_train, y_train = load_data("data/ex2data2.txt")
+
+# View the variables
+# print X_train
+print("X_train:", X_train[:5])
+print("Type of X_train:",type(X_train))
+
+# print y_train
+print("y_train:", y_train[:5])
+print("Type of y_train:",type(y_train))
+
+# Check the dimension of the variables
+print ('The shape of X_train is: ' + str(X_train.shape))
+print ('The shape of y_train is: ' + str(y_train.shape))
+print ('We have m = %d training examples' % (len(y_train)))
+
+# Visualize the data
+# Plot examples
+plot_data(X_train, y_train[:], pos_label = "Accepted", neg_label = "Rejected")
+
+# Set the y-axis label
+plt.ylabel('Microchip Test 2')
+# Set the x-axis label
+plt.xlabel('Microchip Test 1')
+plt.legend(loc = "upper right")
+plt.show()
+
+# Feature mapping
+
+print("Original shape of data:", X_train.shape)
+
+mapped_X =  map_feature(X_train[:, 0], X_train[:, 1])
+print("Shape after feature mapping:", mapped_X.shape)
+print("X_train[0]:", X_train[0])
+print("mapped X_train[0]:", mapped_X[0])
 
