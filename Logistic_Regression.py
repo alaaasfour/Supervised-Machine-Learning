@@ -249,3 +249,62 @@ plt.xlabel('Exam 1 score')
 plt.legend(loc = "upper right")
 plt.show()
 print("========================================")
+
+"""
+Exercise 5: Evaluating Logistic Regression
+We can evaluate the quality of the parameters we have found by seeing how well the learned model predicts on our training set.
+You will implement the predict function below to do this.
+The predict function will predict whether the label is 0 or 1 using learned logistic regression parameters w
+Args:
+    X : (ndarray Shape (m,n)) data, m examples by n features
+    w : (ndarray Shape (n,))  values of parameters of the model      
+    b : (scalar)              value of bias parameter of the model
+
+Returns:
+    p : (ndarray (m,)) The predictions for X using a threshold at 0.5
+"""
+
+def predict(X, w, b):
+    # Number of training examples
+    m, n = X.shape
+    p = np.zeros(m)
+
+    # Loop over each example
+    for i in range(m):
+        z_wb = 0
+        # Loop over each feature
+        for j in range(n):
+            # Add the corresponding term to z_wb
+            z_wb_ij = X[i, j] * w[j]
+            z_wb += z_wb_ij
+
+        # Add bias term
+        z_wb += b
+
+        # Calculate the prediction for this example
+        f_wb = sigmoid(z_wb)
+
+        # Apply the threshold
+        p[i] = f_wb >= 0.5
+
+    return p
+
+print("Exercise 5: Evaluating Logistic Regression")
+print("==========")
+# Test the predict code
+np.random.seed(1)
+tmp_w = np.random.randn(2)
+tmp_b = 0.3
+tmp_X = np.random.randn(4, 2) - 0.5
+
+tmp_p = predict(tmp_X, tmp_w, tmp_b)
+print(f'Output of predict: shape {tmp_p.shape}, value {tmp_p}')
+
+# UNIT TESTS
+predict_test(predict)
+
+#Compute accuracy on our training set
+p = predict(X_train, w,b)
+print('Train Accuracy: %f'%(np.mean(p == y_train) * 100))
+print("========================================")
+
