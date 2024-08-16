@@ -255,6 +255,7 @@ Exercise 5: Evaluating Logistic Regression
 We can evaluate the quality of the parameters we have found by seeing how well the learned model predicts on our training set.
 You will implement the predict function below to do this.
 The predict function will predict whether the label is 0 or 1 using learned logistic regression parameters w
+
 Args:
     X : (ndarray Shape (m,n)) data, m examples by n features
     w : (ndarray Shape (n,))  values of parameters of the model      
@@ -314,7 +315,8 @@ Now, we will implement regularized logistic regression to predict whether microc
 quality assurance (QA). During QA, each microchip goes through various tests to ensure it is functioning correctly.
 
 """
-
+print("Exercise 6: Regularized Logistic Regression")
+print("==========")
 # Load dataset
 X_train, y_train = load_data("data/ex2data2.txt")
 
@@ -351,4 +353,51 @@ mapped_X =  map_feature(X_train[:, 0], X_train[:, 1])
 print("Shape after feature mapping:", mapped_X.shape)
 print("X_train[0]:", X_train[0])
 print("mapped X_train[0]:", mapped_X[0])
+print("========================================")
 
+"""
+Exercise 7: Cost Function for Regularized Logistic Regression
+In this part, we will implement the cost function for regularized logistic regression
+
+Args:
+    X : (ndarray Shape (m,n)) data, m examples by n features
+    y : (ndarray Shape (m,))  target value 
+    w : (ndarray Shape (n,))  values of parameters of the model      
+    b : (scalar)              value of bias parameter of the model
+    lambda_ : (scalar, float) Controls amount of regularization
+
+Returns:
+    total_cost : (scalar)     cost 
+"""
+
+def compute_cost_reg(X, y, w, b, lambda_ = 1):
+    m, n = X.shape
+
+    # Call the compute_cost function
+    cost_without_reg = compute_cost(X, y, w, b)
+    reg_cost = 0.
+
+    for j in range(n):
+        reg_cost_j = w[j] ** 2
+        reg_cost = reg_cost + reg_cost_j
+    reg_cost = (lambda_/(2 * m)) * reg_cost
+
+    # Add the regularization cost to get the total cost
+    total_cost = cost_without_reg + reg_cost
+
+    return total_cost
+
+print("Exercise 7: Cost Function for Regularized Logistic Regression")
+print("==========")
+X_mapped = map_feature(X_train[:, 0], X_train[:, 1])
+np.random.seed(1)
+initial_w = np.random.rand(X_mapped.shape[1]) - 0.5
+initial_b = 0.5
+lambda_ = 0.5
+cost = compute_cost_reg(X_mapped, y_train, initial_w, initial_b, lambda_)
+
+print("Regularized cost :", cost)
+
+# UNIT TEST
+compute_cost_reg_test(compute_cost_reg)
+print("========================================")
