@@ -115,3 +115,66 @@ print('Cost at test w and b (non-zeros): {:.3f}'.format(cost))
 # UNIT TESTS
 compute_cost_test(compute_cost)
 print("========================================")
+
+"""
+Exercise 3: Gradient for Logistic Regression
+We also need to implement the gradient to build the logistic regression.
+
+Args:
+    X : (ndarray Shape (m,n)) data, m examples by n features
+    y : (ndarray Shape (m,))  target value 
+    w : (ndarray Shape (n,))  values of parameters of the model      
+    b : (scalar)              value of bias parameter of the model
+    *argv : unused, for compatibility with regularized version below
+
+Returns:
+    dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w
+    dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b
+"""
+
+def compute_gradient(X, y, w, b, *argv):
+    m, n = X.shape
+    dj_dw = np.zeros(w.shape)
+    dj_db = 0.
+
+    for i in range(m):
+        z_wb = 0
+        for j in range(n):
+            z_wb_ij = X[i, j] * w[j]
+            z_wb += z_wb_ij
+        z_wb += b
+        f_wb = sigmoid(z_wb)
+
+        dj_db_i = f_wb - y[i]
+        dj_db += dj_db_i
+
+        for j in range(n):
+            dj_dw_ij = (f_wb - y[i]) * X[i][j]
+            dj_dw[j] += dj_dw_ij
+    dj_dw = dj_dw / m
+    dj_db = dj_db / m
+
+    return dj_db, dj_dw
+
+print("Exercise 3: Compute Gradient for Logistic Regression")
+print("==========")
+# Compute and display gradient with w and b initialized to zeros
+initial_w = np.zeros(n)
+initial_b = 0.
+
+dj_db, dj_dw = compute_gradient(X_train, y_train, initial_w, initial_b)
+print(f'dj_db at initial w and b (zeros):{dj_db}' )
+print(f'dj_dw at initial w and b (zeros):{dj_dw.tolist()}')
+
+# Compute and display cost and gradient with non-zero w and b
+test_w = np.array([ 0.2, -0.5])
+test_b = -24
+dj_db, dj_dw  = compute_gradient(X_train, y_train, test_w, test_b)
+
+print('dj_db at test w and b:', dj_db)
+print('dj_dw at test w and b:', dj_dw.tolist())
+
+# UNIT TESTS
+compute_gradient_test(compute_gradient)
+print("========================================")
+
